@@ -20,6 +20,8 @@ public class RequestParamServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        // 클라이언트 입장에서는 형식의 차이가 있지만 서버 입장에서는 데이터 형태가 같기때문에 GET 방식의 쿼리스트링이나 POST 방식의 바디나 같이사용 가능하다
+
         System.out.println("----------------- 전체 파라미터 조회 start -----------------");
 
         request.getParameterNames().asIterator()
