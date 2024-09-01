@@ -29,11 +29,16 @@ HTTP 요청 데이터 개요
 ###### [content-type 은 HTTP 메시지의 바디데이터 형식을 지정한다. GET URL 쿼리 파라미터 형식 으로 클라이언트 에서 서버로 데이터를 전달할 때는 HTTP 메시지 바디를 사용하지않기때문에 content-type 이 없다 
 ###### POST-HTML Form 형식 으로 데이터를 전달하면 HTTP 메시지 바디에 해당 데이터를 포함해서 보내기 때문에 바디에 포함된 데이터가  어떤 형태인지 꼭 content-type 에 지정해야한다] 
 
+###### HTML FORM 을전송할때 POST 말고 PUT 이나 PATCH 를 보낼수있나요?
+###### -> HTML 스펙상 FORM 데이터를 BODY 로 전송할때 POST 만 허용
 
 - HTTP message body 에 데이터를 직접 담아서 요청
   - HTTP API 에서 주로사용 JSON, XML, TEXT
   - 데이터 형식은 주로 JSON 사용
   - POST, PUT, PATCH
   
+
+
+
 
 
