@@ -47,4 +47,71 @@ HTTP 요청 데이터 개요
 
 
 
+### 
+WEB-INF 이경로안에있으면 외부에서 직접 JSP 를 호출할수 없다 항상 컨트롤러를 통해서 호출된다 
 
+### redirect 와 forward
+- 리다이렉트는 실제 클라이언트에 응답이 나갔다가 클라이언트가 redirect 경로로 다시 요청한다
+따라서 클라이언트가 인지할수있고 URL 경로도 실제로 변경된다.
+- 반면에 포워드는 서버내부에서 일어나는 호출이기 때문에 클라이언트가 전혀 인지하지못한다 
+따라서 URL 경로가 변하지않는다.
+
+
+action 에 /save 하면 절대경로로 인식되지만 / 없이 save 를 하면 현재 디렉토리에서 save 라는 패스로 생성된다
+- ex) /save : http://localhost:8080/save
+- ex) save : http://localhost:8080/servlet-mvc/members/save 가 된다
+- 보통은 절대경로로 해주는게 더좋다고한다. 
+
+
+
+### MVC 로전환 
+
+    <li>id=<%=member.getId()%></li>
+    <li>username=<%=member.getUsername()%></li>
+    <li>age=<%=member.getAge()%></li>
+    
+    위에 방법대신 편하게 아래방법으로 할수도있다.
+    jsp 제공하는 문법이다
+    ${} 프로퍼티 접근법이라고도 한다
+
+    <li>id=${member.id}</li>
+    <li>username=${member.username}</li>
+    <li>age=${member.age}</li>
+
+###
+
+    // out 도 그냥쓸수있는 예약어다
+    for(Member member : members) {
+      out.write("<tr>");
+      out.write(" <td>" + member.getId() + "</td>");
+      out.write(" <td>" + member.getUsername() + "</td>");
+      out.write(" <td>" + member.getAge() + "</td>");
+      out.write("</tr>");
+    }
+
+    // 위 문법 대신 아래 JSTL 문법으로 하면 훨씬 깔끔하다 
+    // 대신 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 선언이 필요하다
+
+    <c:forEach var="member" items="${members}" varStatus="index">
+      <tr>
+        <td><c:out value="${member.id}"/></td>
+        <td><c:out value="${member.username}"/></td>
+        <td><c:out value="${member.age}"/></td>
+      </tr>
+    </c:forEach>
+
+
+### MVC 패턴2 정리
+1. 클라이언트 호출 -> 컨트롤러 로직
+2. 비즈니스 로직 데이터접근
+3. 모델로 데이터전달
+4. 뷰 로직 
+5. 뷰 로직에서 모델에 데이터 참조하여 화면구성
+6. 응답
+
+jsp 편의로 제공하는문법 ${} 프로퍼티 접근법 과 JSTL 문법이존재
+
+MVC 덕분에 컨트롤러 로직과 뷰 로직을 확실하게 분리하였다 
+향후 화면 수정이 발생하면 뷰로직만 변경하면된다.
+
+### MVC 패턴의 한계
