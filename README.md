@@ -163,4 +163,38 @@ MVC 덕분에 컨트롤러 로직과 뷰 로직을 확실하게 분리하였다
   스프링 웹 MVC 의 핵심도 바로 FrontController <br>
   스프링 웹 MVC 의 DispatcherServlet 이 FrontController 패턴으로 구현되어있음
 
+### Modle 추가
 
+#### 서블릿 종속성 제거
+컨트롤러 입장에서는 HttpServletRequest, HttpServletResponse 가 필요없다.
+요청 파라미터 정보는 자바의 Map 으로 넘기도록하면 컨트롤러에서는 서블릿 기술을 몰라도 동작할수있다.
+그리고 request 객체를 Model로 사용하는 대신에 별도의 Model 객체를 만들어서 변환하면된다.
+이렇게하면 구현 코드도 매우 단순해지고, 테스트 코드 작성이쉽다
+
+#### 뷰 이름 중복제거
+컨트롤러에서 지정하는 뷰 이름에 중복이 있는것을 확인할수있다.
+컨트롤러는 뷰의 논리 이름을 반환하고 실제 물리 위치의 이름은 프론트 컨트롤러에서 처리하도록 단순화하자.
+이렇게 해두면 향후 뷰의 폴더 위치가 함께 이동해도 프론트 컨트롤러만 고치면된다.
+
+            물리적위치                   논리이름
+    /WEB-INF/views/new-form.jsp    -> new-form
+    /WEB-INF/views/save-result.jsp -> save-result
+    /WEB-INF/views/members.jsp     -> members
+
+
+#### ModelView
+지금 까지 컨트롤러에서 서블릿에 종속적인 HttpServletRequest 를 사용했다.
+그리고 Model도 'request.setAttribute()' 를 통해 데이터를 저장하고 뷰에 전달했다.
+서블릿의 종속성을 제거하기위해 Model을 직접만들고, 추가로 View 이름까지 전달하는 객체를 만들어보자.
+(이번 버전에서는 컨트롤러에서 HttpServletRequest 를 사용할수없다. 따라서 직접 request.setAttribute() 를 호출할수도 없다. 따라서 Model 이 별도로 필요하다)
+
+#### 뷰 리졸버
+MyView view = viewResolver(viewName) 
+컨트롤러가 반환한 논리 뷰 이름을 실제 물리 뷰 경로로 변경한다. 그리고 실제 물리 경로가 있는 MyView 객체를 반환한다.
+- 논리뷰이름 : members
+- 물리뷰경로 : /WEB-INF/views/members.jsp
+- view.render(mv.getModel(), request, response)
+- 뷰 객체를 통해서 HTML 화면을 랜더링 한다
+- 뷰 객체의 render() 는 모델 정보도 함께 받는다.
+- JSP 는 request.getAttribute() 로 데이터를 조회하기 때문에 모델의 데이터를 꺼내서 request.setAttribute()로 담아둔다
+- JSP로 포워드해서 JSP 를 랜더링한다.
