@@ -432,6 +432,7 @@ return new ModelAndView("new-form");
     1 = BeanNameViewResolver : 빈 이름으로 뷰를 찾아서 반환한다. (예 : 엑셀 파일 생성 기능에 사용)
     2 = InternalResourceViewResolver : JSP를 처리할 수 있는 뷰를 반환한다
 
+
 1. 핸들러 어댑터 호출
    1. 핸들러 어댑터를 통해 "new-form" 이라는 논리 뷰 이름을 흭득한다
    
@@ -452,5 +453,27 @@ return new ModelAndView("new-form");
 * 참고 : InternalResourceViewResolver 는 만약 JSTL 라이브러리가 있으면 InternalResourceView 를 상속받은 JstlView 를 반환한다 JstlView 는 JSTL 태그를 사용시 약간의 부가 기능이 추가된다.
 * 참고 : 다른뷰는 실제 뷰를 랜더링하지만 JSP 의 경우 forward() 를 통해서 해당 JSP 로 이동 해야 랜더링된다 JSP 를 제외한 나머지 뷰 템플릿들은 forward() 과정없이 바로 렌더링 된다. 
 * 참고 : Thymeleaf 뷰 템플릿을 사용하면 ThymeleafViewResolver 를 등록해야된다. 최근에는 라이브러리만 추가하면 스프링부트가 이런작업도 모두 자동화 해준다
+---
 
+## 스프링 MVC 시작하기
+
+### @RequestMapping
+스프링은 어노테이션을 활용한 매우 유연하고 실용적인 컨트롤을 만들었는데 이것이바로 @RequestMapping 어노테이션을 사용하는 컨트롤러이다
+
+#### @RequestMapping
+* RequestMappingHandlerMapping
+* RequestMappingHandlerAdapter
+
+앞서보았듯이 가장 우선순위가 높은 핸들러 매핑과 어댑터는 위에 2개이다
+
+---
+#### @Controller
+* 스프링이 자동으로 스프링빈으로 등록한다. (내부에 '@Component' 어노테이션이 있어서 컴포넌트 스캔의 대상이 됨)
+* 스프링 MVC 에서 어노테이션 기반 컨트롤러로 인식한다.
+
+#### @RequestMapping
+* 요청 정보를 매핑한다 해당 URL이 호출되면 이 메서드가 호출된다 어노테이션 기반으로 동작하기 때문에 메서드의 이름은 임의로 지으면된다
+
+#### ModelAndView
+* 모델과 뷰 정보를 담아서 반환하면된다.
 
